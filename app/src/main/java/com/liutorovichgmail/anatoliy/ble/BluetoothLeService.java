@@ -16,9 +16,6 @@ import android.os.IBinder;
 
 import java.util.List;
 
-/**
- * Created by ToLik on 29.05.2017.
- */
 
 public class BluetoothLeService extends Service {
     private final static String TAG = BluetoothLeService.class.getSimpleName();

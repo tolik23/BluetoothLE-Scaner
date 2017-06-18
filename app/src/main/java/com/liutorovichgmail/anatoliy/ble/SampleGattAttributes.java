@@ -2,9 +2,6 @@ package com.liutorovichgmail.anatoliy.ble;
 
 import java.util.HashMap;
 
-/**
- * Created by ToLik on 29.05.2017.
- */
 
 public class SampleGattAttributes {
     private static HashMap<String, String> attributes = new HashMap();
