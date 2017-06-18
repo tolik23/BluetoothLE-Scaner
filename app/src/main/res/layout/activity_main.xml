@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    tools:context="com.liutorovichgmail.anatoliy.ble.MainActivity">
+
+    <ListView
+        android:id="@+id/listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/StartScanButton"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="19dp"></ListView>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:text="Stop Scanning"
+        android:id="@+id/StopScanButton"
+        android:layout_marginTop="17dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:text="Scan"
+        android:id="@+id/StartScanButton"
+        android:layout_alignBaseline="@+id/StopScanButton"
+        android:layout_alignBottom="@+id/StopScanButton"
+        android:layout_alignParentStart="true" />
+
+    <ProgressBar
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:id="@+id/progressBar"
+        android:layout_alignTop="@+id/StopScanButton"
+        android:layout_alignParentEnd="true" />
+</RelativeLayout>
