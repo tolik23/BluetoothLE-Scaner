@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 public class SampleGattAttributes {
     private static HashMap<String, String> attributes = new HashMap();
+    public static byte[] data = {1,2,3,4,5};
 
     static {
         // Sample Services.

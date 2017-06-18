@@ -50,7 +50,6 @@ public class DeviceControlActivity extends Activity {
         public void onServiceConnected(ComponentName componentName, IBinder service) {
             mBluetoothLeService = ((BluetoothLeService.LocalBinder) service).getService();
             if (!mBluetoothLeService.initialize()) {
-                Log.e(TAG, "Unable to initialize Bluetooth");
                 finish();
             }
             // Автоматически подключается к устройству при успешной инициализации запуска.
@@ -98,8 +97,7 @@ public class DeviceControlActivity extends Activity {
                         final BluetoothGattCharacteristic characteristic =
                                 mGattCharacteristics.get(groupPosition).get(childPosition);
                         final int charaProp = characteristic.getProperties();
-                        final byte[] data = {1,2,3,4,5};
-                        characteristic.setValue(data);
+                        characteristic.setValue(SampleGattAttributes.data);
                         if ((charaProp | BluetoothGattCharacteristic.PROPERTY_WRITE) > 0) {
                             if (mNotifyCharacteristic != null) {
                                 mBluetoothLeService.setCharacteristicNotification(
