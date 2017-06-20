@@ -11,7 +11,6 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -150,7 +149,6 @@ public class DeviceControlActivity extends Activity {
         registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
         if (mBluetoothLeService != null) {
             final boolean result = mBluetoothLeService.connect(mDeviceAddress);
-            Log.d(TAG, "Connect request result=" + result);
         }
     }
 
@@ -207,9 +205,9 @@ public class DeviceControlActivity extends Activity {
 
     private void displayToast(String data) {
         if (data != null) {
-            Toast toast = Toast.makeText(getApplicationContext(), R.string.data_transferred + data, Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(getApplicationContext(), "В характеристику записано: " + data, Toast.LENGTH_SHORT);
             toast.show();
-    }
+        }
     }
 
 
@@ -277,3 +275,4 @@ public class DeviceControlActivity extends Activity {
         return intentFilter;
     }
 }
+
