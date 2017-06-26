@@ -5,7 +5,9 @@ import java.util.HashMap;
 
 public class SampleGattAttributes {
     private static HashMap<String, String> attributes = new HashMap();
-    public static byte[] data = {1,2,3,4,5};
+    public static byte[] data = {(byte) (Integer.parseInt("83",16) & 0xff),(byte) (Integer.parseInt("FF",16) & 0xff),(byte) (Integer.parseInt("43",16) & 0xff),
+            (byte) (Integer.parseInt("00",16) & 0xff), (byte) (Integer.parseInt("FF",16) & 0xff),(byte) (Integer.parseInt("01",16) & 0xff),(byte) (Integer.parseInt("68",16) & 0xff),
+            (byte) (Integer.parseInt("07",16) & 0xff), (byte) (Integer.parseInt("E6",16) & 0xff), (byte) (Integer.parseInt("5D",16) & 0xff)};
     public static String HEART_RATE_MEASUREMENT = "00002a37-0000-1000-8000-00805f9b34fb";
     public static String CLIENT_CHARACTERISTIC_CONFIG = "00002902-0000-1000-8000-00805f9b34fb";
 
