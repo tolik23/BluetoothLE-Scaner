@@ -6,15 +6,20 @@ import android.bluetooth.BluetoothGattService;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.view.ContextThemeWrapper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.LinearLayout;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +32,7 @@ import java.util.List;
 public class DeviceControlActivity extends Activity {
     private final static String TAG = DeviceControlActivity.class.getSimpleName();
 
+
     public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
 
@@ -35,6 +41,7 @@ public class DeviceControlActivity extends Activity {
     private String mDeviceAddress;
     private ExpandableListView mGattServicesList;
     private BluetoothLeService mBluetoothLeService;
+    private AlertDialog.Builder ad;
     private ArrayList<ArrayList<BluetoothGattCharacteristic>> mGattCharacteristics =
             new ArrayList<ArrayList<BluetoothGattCharacteristic>>();
     private boolean mConnected = false;
@@ -92,18 +99,19 @@ public class DeviceControlActivity extends Activity {
                 @Override
                 public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
                                             int childPosition, long id) {
+
                     if (mGattCharacteristics != null) {
                         final BluetoothGattCharacteristic characteristic =
                                 mGattCharacteristics.get(groupPosition).get(childPosition);
                         final int charaProp = characteristic.getProperties();
-                        characteristic.setValue(SampleGattAttributes.data);
                         if ((charaProp | BluetoothGattCharacteristic.PROPERTY_WRITE) > 0) {
                             if (mNotifyCharacteristic != null) {
                                 mBluetoothLeService.setCharacteristicNotification(
                                         mNotifyCharacteristic, false);
                                 mNotifyCharacteristic = null;
                             }
-                            mBluetoothLeService.writeCharacteristic(characteristic);
+
+                            alertDialog(characteristic);
                         }else{
                             Toast toast = Toast.makeText(getApplicationContext(), R.string.characteristic_notwrite, Toast.LENGTH_SHORT);
                             toast.show();
@@ -115,6 +123,8 @@ public class DeviceControlActivity extends Activity {
                         }
                         return true;
                     }
+
+
                     return false;
                 }
             };
@@ -203,11 +213,53 @@ public class DeviceControlActivity extends Activity {
         });
     }
 
+    // Вывод сообщения о записи в характеристику
     private void displayToast(String data) {
         if (data != null) {
             Toast toast = Toast.makeText(getApplicationContext(), "В характеристику записано: " + data, Toast.LENGTH_SHORT);
             toast.show();
         }
+    }
+
+    // Диалоговое акно для ввода значения записываемого в характеристику
+    private void alertDialog(final BluetoothGattCharacteristic characteristic){
+        String title = "Введите значение";
+        final EditText input = new EditText(DeviceControlActivity.this);
+        String button1String = "Ok";
+        String button2String = "Cancel";
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        input.setLayoutParams(lp);
+
+        ad = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.myDialog));
+        ad.setTitle(title);  // заголовок
+        ad.setView(input);
+        ad.setPositiveButton(button1String, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int arg1) {
+                String s = input.getText().toString();
+                byte[] data = hexStringToByteArray(s);
+                characteristic.setValue(data);
+                mBluetoothLeService.writeCharacteristic(characteristic);
+            }
+        });
+        ad.setNegativeButton(button2String, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int arg1) {
+            }
+        });
+        ad.setCancelable(false);
+        ad.show();
+    }
+
+    // Перед строки heх в массив байт
+    private byte[] hexStringToByteArray(String s) {
+        int len = s.length();
+        byte[] data = new byte[len / 2];
+        for (int i = 0; i < len; i += 2) {
+            data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
+                    + Character.digit(s.charAt(i+1), 16));
+        }
+        return data;
     }
 
 

@@ -21,5 +21,8 @@
         <item name="android:shadowRadius">2</item>
     </style>
 
+    <style name="myDialog" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowNoTitle">true</item>
+    </style>
 
 </resources>
